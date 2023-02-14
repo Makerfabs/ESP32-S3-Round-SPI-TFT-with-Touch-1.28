@@ -13,6 +13,9 @@ Modify from :https://github.com/VolosR/BoatGauges
 #include "gauge6.h"
 #include "font.h"
 
+// AUTO MODE 0 USE finger touch screen to change arrow position
+#define AUTO_MODE 1
+
 #define ADC_INPUT_PIN 18
 #define BUTTON_PIN 17
 
@@ -144,6 +147,10 @@ void Task_touch(void *pvParameters)
 {
 
   long runtime_1 = 0;
+  long runtime_2 = 0;
+
+  int auto_adc = 0;
+  int auto_unit = 3;
 
   while (1)
   {
@@ -172,21 +179,46 @@ void Task_touch(void *pvParameters)
       }
       else
       {
-        double temp_rad = atan((last_y - 120.0) / (last_x - 120.0)) * 100;
-        // USBSerial.println(last_x);
-        // USBSerial.println(last_y);
-        // USBSerial.println(temp_rad);
+        if (AUTO_MODE == 0)
+        {
+          double temp_rad = atan((last_y - 120.0) / (last_x - 120.0)) * 100;
+          // USBSerial.println(last_x);
+          // USBSerial.println(last_y);
+          // USBSerial.println(temp_rad);
 
-        int fake_adc = 0;
+          int fake_adc = 0;
 
-        if (last_x < 120)
-          fake_adc = map(temp_rad, -160, 160, 0, 2047);
-        else
-          fake_adc = map(temp_rad, -160, 160, 2048, 4095);
+          if (last_x < 120)
+            fake_adc = map(temp_rad, -160, 160, 0, 2047);
+          else
+            fake_adc = map(temp_rad, -160, 160, 2048, 4095);
 
-        // result = map(analogRead(ADC_INPUT_PIN), 0, 4095, minValue[chosenOne], maxValue[chosenOne]);
-        result = map(fake_adc, 0, 4095, minValue[chosenOne], maxValue[chosenOne]);
+          result = map(fake_adc, 0, 4095, minValue[chosenOne], maxValue[chosenOne]);
+          angle = map(result, minValue[chosenOne], maxValue[chosenOne], 0, 267);
+        }
+      }
+    }
+
+    if (AUTO_MODE == 1)
+    {
+      if ((millis() - runtime_2) > 1)
+      {
+        auto_adc += auto_unit;
+        if (auto_adc > 4095)
+        {
+          auto_adc = 4095;
+          auto_unit = 0 - auto_unit;
+        }
+        if (auto_adc < 0)
+        {
+          auto_adc = 0;
+          auto_unit = 0 - auto_unit;
+        }
+
+        result = map(auto_adc, 0, 4095, minValue[chosenOne], maxValue[chosenOne]);
         angle = map(result, minValue[chosenOne], maxValue[chosenOne], 0, 267);
+
+        runtime_2 = millis();
       }
     }
   }
