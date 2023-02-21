@@ -6,6 +6,8 @@
 
 #include "GifClass.h"
 
+#define AUTO_MODE 1
+
 #define TFT_BLK 45
 #define TFT_RES 11
 #define TFT_DC 21
@@ -171,7 +173,7 @@ void Task_touch(void *pvParameters)
 
     while (1)
     {
-        if (touch.available())
+        if (touch.available() && !AUTO_MODE)
         {
 
             if ((millis() - runtime_1) > 1000)
@@ -184,6 +186,15 @@ void Task_touch(void *pvParameters)
                 // USBSerial.println(F("Get touch"));
             }
         }
+        if (AUTO_MODE)
+            if ((millis() - runtime_1) > 3000)
+            {
+                gif_index++;
+                gif_index %= GIF_NUM;
+                fresh_flag = 1;
+
+                runtime_1 = millis();
+            }
         vTaskDelay(100);
     }
 }
