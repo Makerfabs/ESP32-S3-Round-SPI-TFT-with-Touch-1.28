@@ -2,15 +2,15 @@
 
 ```c++
 /*
-Version:		V1.0
-Author:			Vincent
-Create Date:	2023/2/18
+Version:        V1.1
+Author:            Vincent
+Create Date:    2023/2/18
 Note:
-
+        2023/4/15 V1.1:Add TFT_eSPI support.
 */
 ```
 
-[toc]
+[TOC]
 
 ![main](md_pic/main.jpg)
 
@@ -20,8 +20,6 @@ Note:
 
 [Makerfabs Wiki](https://wiki.makerfabs.com/)
 
-
-
 # ESP32-S3 Round SPI TFT with Touch 1.28"
 
 ## Intruduce
@@ -30,13 +28,9 @@ Product Link ：[ESP32-S3 Round SPI TFT with Touch 1.28"](https://www.makerfabs.
 
 Wiki Link : []()
 
-
-
 The ESP32-S3 round display with touch can be a great tool for your applications such as smartwatch.
 
 We selected the ESP32-S3 generation as the controller, with 16MB Flash and 8MB PSRAM, enough for most IOT applications; The round display is 240x240 resolution 1.28", colorful RGB, with capacitive touch, it communicates with ESP32 with SPI interface, so there enough GPIO left for expansion applications.
-
-
 
 ## Feature
 
@@ -78,3 +72,15 @@ If you want use lvgl, please unzip "lib/mf_Lvgl.zip" and copy to arduino library
 You can run this file test if you feel that your hardware is not working properly. 
 
 Need copy logo_240240.jpg to sd card.
+
+
+
+## Example
+
+### TFT_eSPI demo
+
+Add TFT_eSPI support.
+
+Library version is 2.5.0
+
+And cover "User_Setuo.h" to library directry.
