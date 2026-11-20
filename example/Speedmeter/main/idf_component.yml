@@ -1,0 +1,7 @@
+dependencies:
+  idf: ">=5.3"
+  espressif/esp_lcd_gc9a01: "^1.0.0"
+  lvgl/lvgl:
+    version: "9.3.0"
+    public: true
+  0015/map_tiles: "^2.0.0"
